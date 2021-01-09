@@ -1,4 +1,4 @@
-package com.ing.tech.data;
+package exceptions;
 
 import java.util.Date;
 

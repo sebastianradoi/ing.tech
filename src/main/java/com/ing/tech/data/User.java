@@ -1,12 +1,20 @@
 package com.ing.tech.data;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "users")
 public class User {
+	@Id
+	@GeneratedValue
+	private Long id;
 	private String firstName;
 	private String lastName;
-	private int age;
 	private String username;
 	private String pass;
-	private String role;
 
 	public String getFirstName() {
 		return firstName;
@@ -22,14 +30,6 @@ public class User {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
-	}
-
-	public int getAge() {
-		return age;
-	}
-
-	public void setAge(int age) {
-		this.age = age;
 	}
 
 	public String getUsername() {
@@ -48,32 +48,22 @@ public class User {
 		this.pass = pass;
 	}
 
-	public String getRole() {
-		return role;
-	}
-
-	public void setRole(String role) {
-		this.role = role;
-	}
-
 	public User() {
 		super();
 	}
 
-	public User(String firstName, String lastName, int age, String username, String pass, String role) {
+	public User(String firstName, String lastName, String username, String pass) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.age = age;
 		this.username = username;
 		this.pass = pass;
-		this.role = role;
 	}
 
 	@Override
 	public String toString() {
-		return "User [firstName=" + firstName + ", lastName=" + lastName + ", age=" + age + ", username=" + username
-				+ ", pass=" + pass + ", role=" + role + "]";
+		return "User [firstName=" + firstName + ", lastName=" + lastName + ", username=" + username
+				+ ", pass=" + pass + ", role=" + "]";
 	}
 
 }
