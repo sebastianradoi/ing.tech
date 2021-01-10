@@ -1,38 +1,27 @@
-package com.ing.tech.auth;
+package exceptions;
 
 import java.util.Date;
 
-import org.springframework.http.HttpHeaders;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.ing.tech.data.ExceptionResponse;
-
+@ControllerAdvice
 public class CustomResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
 	@ExceptionHandler(Exception.class)
-	public final ResponseEntity<Object> handleAllExceptions (Exception ex, WebRequest request) {
-		ExceptionResponse exceptionResponse = new ExceptionResponse (
-				new Date(), ex.getMessage(), request.getDescription(false));
-		return new ResponseEntity(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-	@ExceptionHandler(UsernameNotFoundException.class)
-	public final ResponseEntity<Object> handleUserNotFoundException (UsernameNotFoundException ex, WebRequest request){
-		ExceptionResponse exceptionResponse = new ExceptionResponse(
-				new Date(), ex.getMessage(), request.getDescription(false));
+	public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest request) {
+		ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), ex.getMessage(),
+				request.getDescription(false));
+		logger.error(ex.getMessage(), ex);
 		return new ResponseEntity(exceptionResponse, HttpStatus.NOT_FOUND);
 	}
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public final ResponseEntity<Object> handleMethodArgumentNotValid(
-			MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request){
-		ExceptionResponse exceptionResponse = new ExceptionResponse(
-				new Date(), "Validation failed", ex.getBindingResult().toString());
-		return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
-		
-	}
+
 }
